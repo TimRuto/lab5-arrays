@@ -7,11 +7,11 @@
  * the bubble sort and linear search in your PDF report BEFORE
  * writing any code below.
  *
- * @author     [Your Full Name]
- * @student    [Your Reg Number, e.g. SCT212-XXXX/2024]
+ * @author     [Tim Kiplimo]
+ * @student    [ENE212-0063/2021]
  * @lab        Lab 5 of 14
  * @unit       ICS 2371
- * @date       [Date completed]
+ * @date       [26/04/2026]
  */
 
 // Working dataset
@@ -35,6 +35,27 @@ $data = [64, 34, 25, 12, 22, 11, 90, 47, 55, 38];
 //    in the worst case? Show your working.
 
 // TODO: Exercise A — Bubble Sort — your code here
+$data = [64, 34, 25, 12, 22, 11, 90, 47, 55, 38];
+
+echo "<h3>Exercise A — Bubble Sort</h3>";
+/* Developer Comment:
+ * In the worst-case scenario (an array sorted in reverse), the inner loop 
+ * makes comparisons based on the formula: n(n-1)/2. 
+ * For n=10, worst-case comparisons = 10 * 9 / 2 = 45 comparisons.
+ */
+$data_a = $data;
+$n = count($data_a);
+
+for ($i = 0; $i < $n - 1; $i++) {
+    for ($j = 0; $j < $n - $i - 1; $j++) {
+        if ($data_a[$j] > $data_a[$j + 1]) {
+            $temp = $data_a[$j];
+            $data_a[$j] = $data_a[$j + 1];
+            $data_a[$j + 1] = $temp;
+        }
+    }
+    echo "Pass " . ($i + 1) . ": " . implode(", ", $data_a) . "<br>";
+}
 
 
 // ══════════════════════════════════════════════════════════════
@@ -46,6 +67,25 @@ $data = [64, 34, 25, 12, 22, 11, 90, 47, 55, 38];
 // Test it on an already-sorted array and show it exits early.
 
 // TODO: Exercise B — Optimised Bubble Sort — your code here
+echo "<h3>Exercise B — Optimised Bubble Sort</h3>";
+$sorted_data = [1, 2, 3, 4, 5];
+$n_opt = count($sorted_data);
+
+for ($i = 0; $i < $n_opt - 1; $i++) {
+    $swapped = false;
+    for ($j = 0; $j < $n_opt - $i - 1; $j++) {
+        if ($sorted_data[$j] > $sorted_data[$j + 1]) {
+            $temp = $sorted_data[$j];
+            $sorted_data[$j] = $sorted_data[$j + 1];
+            $sorted_data[$j + 1] = $temp;
+            $swapped = true;
+        }
+    }
+    if (!$swapped) {
+        echo "Early exit triggered at pass " . ($i + 1) . "! The array is already sorted.<br>";
+        break;
+    }
+}
 
 
 // ══════════════════════════════════════════════════════════════
@@ -63,6 +103,21 @@ $data = [64, 34, 25, 12, 22, 11, 90, 47, 55, 38];
 // Print clearly: "Found 22 at index 4" or "99 not found"
 
 // TODO: Exercise C — Linear Search — your code here
+echo "<h3>Exercise C — Linear Search</h3>";
+function linearSearch(array $arr, $target) {
+    for ($i = 0; $i < count($arr); $i++) {
+        if ($arr[$i] === $target) {
+            return $i; // Return the index
+        }
+    }
+    return false;
+}
+
+$test22 = linearSearch($data, 22);
+echo "linearSearch(\$data, 22) returned: " . ($test22 !== false ? "Index $test22" : "false") . "<br>";
+
+$test99 = linearSearch($data, 99);
+echo "linearSearch(\$data, 99) returned: " . ($test99 !== false ? "Index $test99" : "false") . "<br>";
 
 
 // ══════════════════════════════════════════════════════════════
@@ -74,3 +129,14 @@ $data = [64, 34, 25, 12, 22, 11, 90, 47, 55, 38];
 //    changed compared to the original array? Why does this matter?
 
 // TODO: Exercise D — your code here
+echo "<h3>Exercise D — Sort then Search</h3>";
+/* Developer Comment:
+ * Does the index of 47 change after sorting? 
+ * Yes. In the original array, 47 is at index 7. In the sorted array, it moves to index 6.
+ * Why this matters: In real-world processing, if arrays act as parallel data stores 
+ * (e.g., array A holds IDs, array B holds scores), sorting one without parallel 
+ * sorting the other permanently breaks the relational mapping between the two datasets.
+ */
+$sorted_data_result = $data_a; // Sorted from Exercise A
+$search_sorted = linearSearch($sorted_data_result, 47);
+echo "linearSearch(\$sorted_data, 47) returned: Index $search_sorted<br>";
